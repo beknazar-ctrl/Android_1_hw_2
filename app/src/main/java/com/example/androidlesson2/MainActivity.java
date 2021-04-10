@@ -1,17 +1,16 @@
 package com.example.androidlesson2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     EditText email, view, sms;
@@ -62,26 +61,26 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (noteEmpty) {
-                    if (!TextUtils.isEmpty(email.getText().toString()) && !TextUtils.isEmpty(view.getText().toString())) {
-                        Intent intent = new Intent(Intent.ACTION_SEND);
-                        intent.setType("text/html");
-                        intent.putExtra(Intent.EXTRA_EMAIL, "emailaddress@emailaddress.com");
-                        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                        intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
-                        startActivity(Intent.createChooser(intent, "Send Email"));
+        btnSend.setOnClickListener(v -> {
+            if (noteEmpty) {
+                if (!TextUtils.isEmpty(email.getText().toString())) {
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_EMAIL,new String[]{email.getText().toString()});
+                    intent.putExtra(Intent.EXTRA_SUBJECT,view.getText().toString());
+                    intent.putExtra(Intent.EXTRA_TEXT,sms.getText().toString());
+                    intent.setType("message/rfc822");
+                    startActivity(Intent.createChooser(intent,"Вилберите куда отправить"));
 
-                    }
-                }else {
-                    Toast.makeText(MainActivity.this,"заполните email",Toast.LENGTH_SHORT).show();
                 }
-
+            }else {
+                Toast.makeText(MainActivity.this,"заполните email",Toast.LENGTH_SHORT).show();
             }
+
         });
 
+
     }
+
+
 
 }
